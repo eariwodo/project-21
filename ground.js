@@ -12,7 +12,7 @@ class Ground
     World.add(world, this.body);
   }
 
-  display() {
+  show() {
     var pos = this.body.position;
     push();
     rectMode(CENTER);
@@ -23,3 +23,5 @@ class Ground
   }
   
 }
+
+

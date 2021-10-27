@@ -1,47 +1,60 @@
-
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
-const Body = Matter.Body;
+
+let engine;
+let world;
+
+var ground;
+var left;
+var right;
+var top_wall;
 var ball;
-var ground,leftside, rightside
-function preload()
-{
-	
-}
-
+var btn1,btn2;
 function setup() {
-	createCanvas(1600, 700);
-	engine = Engine.create();
-	world = engine.world;
-var ball_options={
-	isStatic: false, 
-	restitution: 0.3,
-	friction : 0,
-	density: 1.2
-}
-ball=Bodies.circle(260,100,20,ball_options)
-World.add(world,ball)
-	
+  createCanvas(400, 400);
+  engine = Engine.create();
+  world = engine.world;
+  var balloptions = {
+    restitution: 0.95
+  }
+  ground = new Ground(200, 390, 400, 20);
+  right = new Ground(390, 200, 20, 400);
+  left = new Ground(10, 200, 20, 400);
+  top_wall = new Ground(200, 10, 400, 20);
+  ball = Bodies.circle(35, 65, 20, balloptions)
 
-	//Create the Bodies Here.
-ground=new Ground(width/2,680,width,20)
-leftside= new Ground(1100,600,20,120)
-rightside= new Ground(1250,600,20,120)
-	Engine.run(engine);
-  
-}
+btn1=createImg ('right.png');
+btn1.position (310,50);
+btn1.size (50,50);
+btn1.mouseClicked (hForce);
 
+btn2=createImg ('up.png');
+btn2.position (20,50);
+btn2.size (50,50)
+btn2.mouseClicked (vForce);
+
+
+  World.add(world, ball);
+  rectMode(CENTER);
+  ellipseMode(RADIUS);
+}
 
 function draw() {
-  rectMode(CENTER);
-  background(0);
-  ground,display()
-  rightside.display()
-  elliespe(ball.postion.x,ball.postion.y,20,20)
-  drawSprites();
- 
+  background(51);
+
+  ellipse(ball.position.x, ball.position.y, 20)
+  ground.show();
+  top_wall.show();
+  left.show();
+  right.show();
+  Engine.update(engine);
 }
 
+function hForce(){
+  Matter.Body.applyForce (ball,{x:0,y:0},{x:0.05,y:0});
+}
 
-
+function vForce(){
+  Matter.Body.applyForce(ball,{x:0,y:0},{x:0, y:-0.05})
+}
